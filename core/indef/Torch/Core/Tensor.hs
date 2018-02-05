@@ -5,6 +5,7 @@ module Torch.Core.Tensor
 
 import GHC.ForeignPtr (ForeignPtr)
 import Torch.Class.Tensor.Copy
+import THTypes
 import qualified TensorCopy as Sig
 
 newtype Tensor = Tensor { tensor :: ForeignPtr CTensor }

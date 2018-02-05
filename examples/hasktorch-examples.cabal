@@ -17,8 +17,40 @@ source-repository head
 executable copy
   main-is: Main.hs
   hs-source-dirs: copy
-  ghc-options: -Wall -fno-cse
   default-language: Haskell2010
   build-depends:
       base >=4.7 && <5
     , hasktorch-core
+
+    -- cabal/ghc misses the `raw` reexports in `core` if this is commented out:
+    , hasktorch-raw
+  mixins:
+      hasktorch-core (Torch.Core.Tensor as Torch.Core.TensorLong)
+       requires (TensorCopy as THLongTensorCopy)
+    , hasktorch-core (Torch.Core.Tensor as Torch.Core.TensorFloat)
+       requires (TensorCopy as THFloatTensorCopy)
+
+-- name:          hasktorch-examples
+-- version:       0.1.0.0
+-- synopsis:      Torch for tensors and neural networks in Haskell (backpack example)
+-- description:   Example usage with backpack
+-- homepage:      https://github.com/hasktorch/backpack-example#readme
+-- bug-reports:   https://github.com/hasktorch/backpack-example/issues
+-- license:       BSD3
+-- author:        Sam Stites <sam@stites.io>
+-- category:      Tensors, Machine Learning
+-- build-type:    Simple
+-- cabal-version: >= 1.10
+-- 
+-- source-repository head
+--   type: git
+--   location: https://github.com/hasktorch/backpack-example
+-- 
+-- executable copy
+--   main-is: Main.hs
+--   hs-source-dirs: copy
+--   ghc-options: -Wall -fno-cse
+--   default-language: Haskell2010
+--   build-depends:
+--       base >=4.7 && <5
+--     , hasktorch-core

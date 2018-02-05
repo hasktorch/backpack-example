@@ -13,64 +13,90 @@ source-repository head
   type: git
   location: https://github.com/hasktorch/backpack-example
 
--- =================================================================================== --
--- Main library
--- bundles up all satisfied requirements into into one user-friendly library
 library
   default-language: Haskell2010
-  build-depends:
-      hasktorch-core-long
-    , hasktorch-core-float
-    , hasktorch-core-classes
+  build-depends: base >=4.7 && <5, hasktorch-raw, hasktorch-raw-signatures
+  hs-source-dirs: indef, classes
   reexported-modules:
-      Torch.Core.TensorLong
-    , Torch.Core.TensorFloat
-    , Torch.Class.Tensor.Copy
-
--- =================================================================================== --
--- Satisfiy indefinites and reexport under type-specific versions
-
--- instantiate all long tensors
-library hasktorch-core-long
-  default-language: Haskell2010
-  build-depends:
-      base >=4.7 && <5
-    , hasktorch-core-indef
-    , hasktorch-raw
-  exposed-modules: Torch.Core.TensorLong
-  mixins:
-     hasktorch-core-indef (Torch.Core.Tensor as Torch.Core.TensorLong)
-        requires (TensorCopy as THLongTensorCopy)
-
--- instantiate all float tensors
-library hasktorch-core-float
-  default-language: Haskell2010
-  build-depends:
-      base >=4.7 && <5
-    , hasktorch-core-indef
-    , hasktorch-raw
-  exposed-modules: Torch.Core.TensorFloat
-  mixins:
-     hasktorch-core-indef (Torch.Core.Tensor as Torch.Core.TensorFloat)
-        requires (TensorCopy as THFloatTensorCopy)
-
--- =================================================================================== --
--- Indefinite code and typeclasses in our source
-
--- Have an indefinite package which contains our mixin-able code for all tensors
-library hasktorch-core-indef
-  default-language: Haskell2010
-  build-depends: base >=4.7 && <5, hasktorch-raw, hasktorch-core-classes
-  hs-source-dirs: indef
+      THLongTensorCopy
+    , THFloatTensorCopy
   exposed-modules:
       Torch.Core.Tensor
+    , Torch.Class.Tensor.Copy
 
--- (possibly irrelevant, but running into issues) split off the typeclasses from the indefinite
--- package so that no requirements propagate in the reexport of typeclasses
--- from hasktorch-core
-library hasktorch-core-classes
-  default-language: Haskell2010
-  build-depends: base >=4.7 && <5, hasktorch-raw
-  hs-source-dirs: classes
-  exposed-modules: Torch.Class.Tensor.Copy
-
+-- name:           hasktorch-core
+-- version:        0.1.0.0
+-- synopsis:       Torch for tensors and neural networks in Haskell (backpack example)
+-- description:    core tensor abstractions wrapping raw TH bindings with backpack
+-- category:       Tensors, Machine Learning
+-- homepage:       https://github.com/hasktorch/backpack-example#readme
+-- author:         Sam Stites <sam@stites.io>
+-- license:        BSD3
+-- build-type:     Simple
+-- cabal-version:  >= 1.10
+-- 
+-- source-repository head
+--   type: git
+--   location: https://github.com/hasktorch/backpack-example
+-- 
+-- -- =================================================================================== --
+-- -- Main library
+-- -- bundles up all satisfied requirements into into one user-friendly library
+-- library
+--   default-language: Haskell2010
+--   build-depends:
+--       hasktorch-core-long
+--     , hasktorch-core-float
+--     , hasktorch-core-classes
+--   reexported-modules:
+--       Torch.Core.TensorLong
+--     , Torch.Core.TensorFloat
+--     , Torch.Class.Tensor.Copy
+-- 
+-- -- =================================================================================== --
+-- -- Satisfiy indefinites and reexport under type-specific versions
+-- 
+-- -- instantiate all long tensors
+-- library hasktorch-core-long
+--   default-language: Haskell2010
+--   build-depends:
+--       base >=4.7 && <5
+--     , hasktorch-core-indef
+--     , hasktorch-raw
+--   exposed-modules: Torch.Core.TensorLong
+--   mixins:
+--      hasktorch-core-indef (Torch.Core.Tensor as Torch.Core.TensorLong)
+--         requires (TensorCopy as THLongTensorCopy)
+-- 
+-- -- instantiate all float tensors
+-- library hasktorch-core-float
+--   default-language: Haskell2010
+--   build-depends:
+--       base >=4.7 && <5
+--     , hasktorch-core-indef
+--     , hasktorch-raw
+--   exposed-modules: Torch.Core.TensorFloat
+--   mixins:
+--      hasktorch-core-indef (Torch.Core.Tensor as Torch.Core.TensorFloat)
+--         requires (TensorCopy as THFloatTensorCopy)
+-- 
+-- -- =================================================================================== --
+-- -- Indefinite code and typeclasses in our source
+-- 
+-- -- Have an indefinite package which contains our mixin-able code for all tensors
+-- library hasktorch-core-indef
+--   default-language: Haskell2010
+--   build-depends: base >=4.7 && <5, hasktorch-raw-types, hasktorch-raw-signatures, hasktorch-core-classes
+--   hs-source-dirs: indef
+--   exposed-modules:
+--       Torch.Core.Tensor
+-- 
+-- -- (possibly irrelevant, but running into issues) split off the typeclasses from the indefinite
+-- -- package so that no requirements propagate in the reexport of typeclasses
+-- -- from hasktorch-core
+-- library hasktorch-core-classes
+--   default-language: Haskell2010
+--   build-depends: base >=4.7 && <5, hasktorch-raw-types
+--   hs-source-dirs: classes
+--   exposed-modules: Torch.Class.Tensor.Copy
+-- 
