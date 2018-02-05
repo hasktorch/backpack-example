@@ -61,7 +61,7 @@ library hasktorch-core-float
 library hasktorch-core-indef
   default-language: Haskell2010
   build-depends: base >=4.7 && <5, hasktorch-raw, hasktorch-core-classes
-  hs-source-dirs: core-indef
+  hs-source-dirs: indef
   exposed-modules:
       Torch.Core.Tensor
 
@@ -71,6 +71,6 @@ library hasktorch-core-indef
 library hasktorch-core-classes
   default-language: Haskell2010
   build-depends: base >=4.7 && <5, hasktorch-raw
-  hs-source-dirs: core-classes
+  hs-source-dirs: classes
   exposed-modules: Torch.Class.Tensor.Copy
 
