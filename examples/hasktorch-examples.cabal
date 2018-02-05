@@ -17,8 +17,15 @@ source-repository head
 executable copy
   main-is: Main.hs
   hs-source-dirs: copy
-  ghc-options: -Wall -fno-cse
   default-language: Haskell2010
   build-depends:
       base >=4.7 && <5
     , hasktorch-core
+
+    -- cabal/ghc misses the `raw` reexports in `core` if this is commented out:
+    , hasktorch-raw
+  mixins:
+      hasktorch-core (Torch.Core.Tensor as Torch.Core.TensorLong)
+       requires (TensorCopy as THLongTensorCopy)
+    , hasktorch-core (Torch.Core.Tensor as Torch.Core.TensorFloat)
+       requires (TensorCopy as THFloatTensorCopy)

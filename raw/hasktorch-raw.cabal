@@ -9,51 +9,24 @@ build-type:    Simple
 cabal-version: >=1.10
 
 library
-  reexported-modules:
+  default-language: Haskell2010
+  signatures:
+      TensorCopy
+
+  exposed-modules:
       THTypes
     , TorchStructs
     , THFloatTensorCopy
     , THLongTensorCopy
 
   build-depends:
-      hasktorch-raw-types
-    , hasktorch-raw-generated
-    , hasktorch-raw-signatures
-
-
-library hasktorch-raw-types
-  hs-source-dirs: types
-  default-language: Haskell2010
-  exposed-modules:
-      THTypes
-    , TorchStructs
-
-  build-depends:
       base >= 4.7 && < 5
     , text >= 1.2.2.2
-
-library hasktorch-raw-signatures
-  hs-source-dirs: signatures
-  default-language: Haskell2010
-  signatures:
-      TensorCopy
-  build-depends:
-      base >= 4.7 && < 5
-    , hasktorch-raw-types
-
-library hasktorch-raw-generated
-  hs-source-dirs: generated
-  default-language: Haskell2010
-  exposed-modules:
-      THFloatTensorCopy
-    , THLongTensorCopy
-
-  build-depends:
-      base >= 4.7 && < 5
     , inline-c >= 0.5
-    , hasktorch-raw-signatures
-    , hasktorch-raw-types
-
+  hs-source-dirs:
+      types
+    , signatures
+    , generated
 
   Build-tools:
       c2hs
