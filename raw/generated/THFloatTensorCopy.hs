@@ -19,6 +19,10 @@ module THFloatTensorCopy
   , p_copyFloat
   , p_copyDouble
   , p_copyHalf
+  , CTensor
+  , CStorage
+  , CReal
+  , CAccReal
   ) where
 
 import Foreign
@@ -27,11 +31,10 @@ import THTypes
 import Data.Word
 import Data.Int
 
-type CTensor = CTHLongTensor
-type CStorage = CTHLongStorage
-type CReal = CLong
-type CAccReal = CLong
-
+type CTensor = CTHFloatTensor
+type CStorage = CTHFloatStorage
+type CReal = CFloat
+type CAccReal = CDouble
 
 -- | c_copy : tensor src -> void
 foreign import ccall "THTensorCopy.h copy"

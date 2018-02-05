@@ -19,6 +19,10 @@ module THLongTensorCopy
   , p_copyFloat
   , p_copyDouble
   , p_copyHalf
+  , CTensor
+  , CStorage
+  , CReal
+  , CAccReal
   ) where
 
 import Foreign

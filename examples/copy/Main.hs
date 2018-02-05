@@ -1,8 +1,8 @@
 module Main where
 
-import Torch.Core.TensorFloat as F
-import Torch.Core.TensorLong as L
-import Torch.Class.Tensor.Copy as Copy
+import qualified Torch.Core.TensorFloat as F
+import qualified Torch.Core.TensorLong as L
+import qualified Torch.Class.Tensor.Copy as Copy
 
 main :: IO ()
 main = do
@@ -10,4 +10,5 @@ main = do
   longTensor <- L.new
   newFloat <- Copy.copy floatTensor
   newLong <- Copy.copy longTensor
+  pure ()
 

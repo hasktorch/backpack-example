@@ -9,6 +9,8 @@ build-type:    Simple
 cabal-version: >=1.10
 
 library
+  Build-tools: c2hs
+  hs-source-dirs: generated
   exposed-modules:
       THFloatTensorCopy
     , THLongTensorCopy
@@ -22,6 +24,4 @@ library
     , inline-c >= 0.5
     , hasktorch-raw-types
 
-  Build-tools:
-      c2hs
 

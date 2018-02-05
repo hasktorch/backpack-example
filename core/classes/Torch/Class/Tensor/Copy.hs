@@ -5,6 +5,6 @@ import THTypes
 
 class TensorCopy t where
   copy       :: t -> IO t
-  copyLong   :: t -> Ptr CTHLongTensor -> IO ()
-  copyFloat  :: t -> Ptr CTHFloatTensor -> IO ()
+  copyLong   :: t -> IO (Ptr CTHLongTensor)
+  copyFloat  :: t -> IO (Ptr CTHFloatTensor)
 

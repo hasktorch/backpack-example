@@ -23,12 +23,12 @@ executable copy
     , hasktorch-core
 
     -- cabal/ghc misses the `raw` reexports in `core` if this is commented out:
-    , hasktorch-raw
-  mixins:
-      hasktorch-core (Torch.Core.Tensor as Torch.Core.TensorLong)
-       requires (TensorCopy as THLongTensorCopy)
-    , hasktorch-core (Torch.Core.Tensor as Torch.Core.TensorFloat)
-       requires (TensorCopy as THFloatTensorCopy)
+    -- , hasktorch-raw
+  -- mixins:
+  --     hasktorch-core (Torch.Core.Tensor as Torch.Core.TensorLong)
+  --      requires (TensorCopy as THLongTensorCopy)
+  --   , hasktorch-core (Torch.Core.Tensor as Torch.Core.TensorFloat)
+  --      requires (TensorCopy as THFloatTensorCopy)
 
 -- name:          hasktorch-examples
 -- version:       0.1.0.0
