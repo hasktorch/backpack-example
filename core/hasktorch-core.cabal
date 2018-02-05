@@ -1,117 +1,76 @@
 name:           hasktorch-core
 version:        0.1.0.0
-synopsis:       Torch for tensors and neural networks in Haskell
-description:    core tensor abstractions wrapping raw TH bindings
+synopsis:       Torch for tensors and neural networks in Haskell (backpack example)
+description:    core tensor abstractions wrapping raw TH bindings with backpack
 category:       Tensors, Machine Learning
-homepage:       https://github.com/hasktorch/hasktorch#readme
-bug-reports:    https://github.com/hasktorch/hasktorch/issues
-author:         Austin Huang
+homepage:       https://github.com/hasktorch/backpack-example#readme
+author:         Sam Stites <sam@stites.io>
 license:        BSD3
 build-type:     Simple
 cabal-version:  >= 1.10
 
 source-repository head
   type: git
-  location: https://github.com/hasktorch/hasktorch
+  location: https://github.com/hasktorch/backpack-example
 
-library hasktorch-core
-  hs-source-dirs:
-      src
-      src/generic
-  ghc-options: -fno-cse -fno-full-laziness
-  build-depends:
-      base               >=4.7 && <5
-    , containers
-    , deepseq            >=1.3.0.0
-    , dimensions         >=0.3.2.0
-    , hasktorch-raw
-    , managed            >=1.0.0 && <1.1
-    , microlens          >=0.4.8.1
-    , numeric-limits
-    , safe-exceptions    >=0.1.0.0
-    , singletons         >=2.2
-    , text               >=1.2.2.2
-    , typelits-witnesses >=0.2.3.0
-
-  -- reexported-modules:
-  --     THTensorDouble as Tensor
-  -- mixins:
-  --     hasktorch-raw (THDoubleTensor as Tensor)
-
-  exposed-modules:
-      Torch.Core.Exceptions
-      Torch.Core.Internal
-      Torch.Core.LogAdd
-      Torch.Core.Random
-      Torch.Core.StorageTypes
-      Torch.Core.Tensor.Dim
-      Torch.Core.Tensor.Types
-      Torch.Raw.Tensor.Generic
-      Torch.Core.StorageDouble
-      Torch.Core.StorageLong
-      Torch.Core.Tensor
-      Torch.Core.Tensor.Dynamic.Double
-      Torch.Core.Tensor.Dynamic.DoubleMath
-      Torch.Core.Tensor.Dynamic.DoubleRandom
-      Torch.Core.Tensor.Dynamic.Float
-      Torch.Core.Tensor.Dynamic.Generic
-      Torch.Core.Tensor.Dynamic.GenericLapack
-      Torch.Core.Tensor.Dynamic.Long
-      Torch.Core.Tensor.Static.Byte
-      Torch.Core.Tensor.Static.Double
-      Torch.Core.Tensor.Static.DoubleLapack
-      Torch.Core.Tensor.Static.DoubleMath
-      Torch.Core.Tensor.Static.DoubleRandom
-      Torch.Core.Tensor.Static.Float
-      Torch.Core.Tensor.Static.FloatMath
-      Torch.Core.Tensor.Static.Generic
-      Torch.Core.Tensor.Static.Long
-  other-modules:
-      Paths_hasktorch_core
+-- =================================================================================== --
+-- Main library
+-- bundles up all satisfied requirements into into one user-friendly library
+library
   default-language: Haskell2010
+  build-depends:
+      hasktorch-core-long
+    , hasktorch-core-float
+    , hasktorch-core-classes
+  reexported-modules:
+      Torch.Core.TensorLong
+    , Torch.Core.TensorFloat
+    , Torch.Class.Tensor.Copy
 
+-- =================================================================================== --
+-- Satisfiy indefinites and reexport under type-specific versions
 
+-- instantiate all long tensors
+library hasktorch-core-long
+  default-language: Haskell2010
+  build-depends:
+      base >=4.7 && <5
+    , hasktorch-core-indef
+    , hasktorch-raw
+  exposed-modules: Torch.Core.TensorLong
+  mixins:
+     hasktorch-core-indef (Torch.Core.Tensor as Torch.Core.TensorLong)
+        requires (TensorCopy as THLongTensorCopy)
 
--- test-suite spec
---   type: exitcode-stdio-1.0
---   main-is: Spec.hs
---   hs-source-dirs:
---       tests
---       tests/generic
---   ghc-options: -fno-cse -fno-full-laziness
---   build-depends:
---       QuickCheck
---     , base >=4.7 && <5
---     , containers
---     , deepseq >=1.3.0.0
---     , dimensions >=0.3.2.0
---     , hasktorch-core
---     , hasktorch-raw
---     , hspec
---     , managed >=1.0.0 && <1.1
---     , microlens >=0.4.8.1
---     , numeric-limits
---     , safe-exceptions >=0.1.0.0
---     , singletons >=2.2
---     , text >=1.2.2.2
---     , typelits-witnesses >=0.2.3.0
---   other-modules:
---       GarbageCollectionSpec
---       MemorySpec
---       Orphans
---       RawLapackSVDSpec
---       Torch.Core.LogAddSpec
---       Torch.Core.RandomSpec
---       Torch.Core.Tensor.GenericSpec
---       Torch.Prelude.Extras
---       Torch.Core.Tensor.Dynamic.DoubleMathSpec
---       Torch.Core.Tensor.Dynamic.DoubleRandomSpec
---       Torch.Core.Tensor.Dynamic.DoubleSpec
---       Torch.Core.Tensor.Dynamic.GenericLapackSpec
---       Torch.Core.Tensor.Static.ByteSpec
---       Torch.Core.Tensor.Static.DoubleLapackSpec
---       Torch.Core.Tensor.Static.DoubleMathSpec
---       Torch.Core.Tensor.Static.DoubleRandomSpec
---       Torch.Core.Tensor.Static.DoubleSpec
---       Paths_hasktorch_core
---   default-language: Haskell2010
+-- instantiate all float tensors
+library hasktorch-core-float
+  default-language: Haskell2010
+  build-depends:
+      base >=4.7 && <5
+    , hasktorch-core-indef
+    , hasktorch-raw
+  exposed-modules: Torch.Core.TensorFloat
+  mixins:
+     hasktorch-core-indef (Torch.Core.Tensor as Torch.Core.TensorFloat)
+        requires (TensorCopy as THFloatTensorCopy)
+
+-- =================================================================================== --
+-- Indefinite code and typeclasses in our source
+
+-- Have an indefinite package which contains our mixin-able code for all tensors
+library hasktorch-core-indef
+  default-language: Haskell2010
+  build-depends: base >=4.7 && <5, hasktorch-raw, hasktorch-core-classes
+  hs-source-dirs: core-indef
+  exposed-modules:
+      Torch.Core.Tensor
+
+-- (possibly irrelevant, but running into issues) split off the typeclasses from the indefinite
+-- package so that no requirements propagate in the reexport of typeclasses
+-- from hasktorch-core
+library hasktorch-core-classes
+  default-language: Haskell2010
+  build-depends: base >=4.7 && <5, hasktorch-raw
+  hs-source-dirs: core-classes
+  exposed-modules: Torch.Class.Tensor.Copy
+
