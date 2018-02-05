@@ -13,22 +13,6 @@ source-repository head
   type: git
   location: https://github.com/hasktorch/backpack-example
 
--- library
---   default-language: Haskell2010
---   build-depends: base >=4.7 && <5, hasktorch-raw, hasktorch-raw-signatures
---   hs-source-dirs: indef, classes
---   reexported-modules:
---       THLongTensorCopy
---     , THFloatTensorCopy
---   exposed-modules:
---       Torch.Core.Tensor
---     , Torch.Class.Tensor.Copy
---   mixins:
---       hasktorch-indef (Torch.Core.Tensor as Torch.Core.TensorLong)
---        requires (TensorCopy as THLongTensorCopy)
---     , hasktorch-core (Torch.Core.Tensor as Torch.Core.TensorFloat)
---        requires (TensorCopy as THFloatTensorCopy)
-
 
 -- =================================================================================== --
 -- Main library
